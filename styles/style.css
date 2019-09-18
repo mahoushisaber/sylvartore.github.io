@@ -1,0 +1,37 @@
+.container {
+  margin: auto;
+}
+.jumbotron {
+  max-width: 25%;
+  border: 0.1px solid grey;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+input {
+  height: 20px;
+}
+.user {
+  max-width: 18%;
+  border: 0.1px solid grey;
+  margin: auto;
+  padding: 12px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.user:hover {
+  background-color: #c6c8cc;
+}
+
+.text {
+  padding: 8px;
+}
+.name {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.title {
+  color: grey;
+  font-size: 15;
+}
