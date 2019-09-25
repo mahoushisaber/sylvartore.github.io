@@ -25,6 +25,7 @@ input {
 
 .text {
   padding: 8px;
+  width: 180px;
 }
 .name {
   font-weight: bold;
@@ -34,4 +35,35 @@ input {
 .title {
   color: grey;
   font-size: 15;
+}
+
+.form {
+  margin: auto;
+  max-width: 18%;
+  padding: 10px;
+  display: none;
+}
+
+input {
+  width: 300px;
+}
+button#add_artist {
+  margin: 10px;
+}
+
+button#add {
+  margin-left: 40%;
+}
+
+.img img {
+  max-width: 72px;
+  max-height: 72px;
+}
+
+.delete {
+  border-radius: 12px;
+  background: crimson;
+  color: white;
+  border: none;
+  height: 40px;
 }

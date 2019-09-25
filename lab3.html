@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Lab02</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <script src="scripts/script.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Artist Directory</h1>
+        <input type="text" />
+        <button id="add_artist" onclick="add_artist()">Add artist</button>
+      </div>
+      <div class="form">
+        <input type="text" id="name" placeholder="Artist Name" maxlength="40" />
+        <input
+          type="text"
+          id="about"
+          placeholder="About Artist"
+          maxlength="40"
+        />
+        <input type="text" id="img" placeholder="Image url" />
+        <button id="add" onclick="add()">Add</button>
+      </div>
+      <div class="users"></div>
+    </div>
+  </body>
+</html>
