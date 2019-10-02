@@ -44,8 +44,8 @@ input {
   display: none;
 }
 
-input {
-  width: 90%;
+#search {
+  width: 65%;
 }
 button#add_artist {
   margin: 10px;

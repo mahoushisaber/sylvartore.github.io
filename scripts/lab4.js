@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  renderArtists();
+  renderAllArtists();
 });
 
 add_artist = () => {
@@ -24,7 +24,7 @@ add = () => {
   const artists = loadArtists();
   artists.push(artist);
   localStorage.setItem("artists", JSON.stringify(artists));
-  renderArtists();
+  renderAllArtists();
 
   document.querySelector(".form #name").value = "";
   document.querySelector(".form #about").value = "";
@@ -32,13 +32,11 @@ add = () => {
   add_artist();
 };
 
-renderArtists = () => {
+renderArtists = artists => {
   const users = document.querySelector(".users");
   while (users.firstChild) {
     users.removeChild(users.firstChild);
   }
-  const artists = loadArtists();
-
   let i = 0;
   for (artist of artists) {
     const user = users.appendChild(document.createElement("div"));
@@ -72,15 +70,29 @@ renderArtists = () => {
   }
 };
 
+renderAllArtists = () => renderArtists(loadArtists());
+
 del = i => {
   const artists = loadArtists();
   artists.splice(i, 1);
   localStorage.setItem("artists", JSON.stringify(artists));
-  renderArtists();
+  renderAllArtists();
 };
 
 loadArtists = () => {
   const artists = localStorage.getItem("artists");
   if (!artists) return [];
   return JSON.parse(artists);
+};
+
+search = () => {
+  const search_key = document.querySelector("#search").value;
+  if (search_key) {
+    const results = loadArtists().filter(value => {
+      if (value.name === search_key || value.about === search_key) return value;
+    });
+    renderArtists(results);
+  } else {
+    renderAllArtists();
+  }
 };
