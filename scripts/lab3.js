@@ -1,6 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelector(".delete").addEventListener("click", del, false);
-});
+document.addEventListener("DOMContentLoaded", () => {});
 
 add_artist = () => {
   let form_display = document.querySelector(".form").style.display;
