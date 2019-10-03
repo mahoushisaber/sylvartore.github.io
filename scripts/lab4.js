@@ -89,7 +89,11 @@ search = () => {
   const search_key = document.querySelector("#search").value;
   if (search_key) {
     const results = loadArtists().filter(value => {
-      if (value.name === search_key || value.about === search_key) return value;
+      if (
+        value.name.search(new RegExp(search_key, "i")) >= 0 ||
+        value.about.search(new RegExp(search_key, "i")) >= 0
+      )
+        return value;
     });
     renderArtists(results);
   } else {
