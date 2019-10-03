@@ -67,6 +67,7 @@ renderArtists = artists => {
     remove.innerText = "Delete";
     remove.setAttribute("class", "delete");
     remove.setAttribute("onclick", "del(" + i++ + ")");
+    remove.addEventListener("click", rm, false);
   }
 };
 
@@ -76,7 +77,10 @@ del = i => {
   const artists = loadArtists();
   artists.splice(i, 1);
   localStorage.setItem("artists", JSON.stringify(artists));
-  renderAllArtists();
+};
+
+rm = event => {
+  event.target.parentElement.parentElement.parentElement.parentElement.remove();
 };
 
 loadArtists = () => {
