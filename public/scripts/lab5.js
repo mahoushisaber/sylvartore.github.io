@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  renderAllArtists();
+  search();
 });
 
-add_artist = () => {
+toggle_add_artist = () => {
   const form_display = document.querySelector(".form").style.display;
   if (!form_display || form_display == "none") {
     document.querySelector(".form").style.display = "block";
@@ -16,23 +16,16 @@ add = () => {
   const about = document.querySelector(".form #about").value;
   const url = document.querySelector(".form #img").value;
 
-  const artist = {};
-  artist.name = name;
-  artist.about = about;
-  artist.url = url;
-
-  const artists = loadArtists();
-  artists.push(artist);
-  localStorage.setItem("artists", JSON.stringify(artists));
-  renderAllArtists();
-
-  document.querySelector(".form #name").value = "";
-  document.querySelector(".form #about").value = "";
-  document.querySelector(".form #img").value = "";
-  add_artist();
+  fetch("/artists/add?name=" + name + "&about=" + about + "&url=" + url).then(() => {
+    search();
+    document.querySelector(".form #name").value = "";
+    document.querySelector(".form #about").value = "";
+    document.querySelector(".form #img").value = "";
+    toggle_add_artist();
+  });
 };
 
-renderArtists = artists => {
+renderArtists = (artists, hidden = []) => {
   const users = document.querySelector(".users");
   while (users.firstChild) {
     users.removeChild(users.firstChild);
@@ -41,6 +34,7 @@ renderArtists = artists => {
   for (artist of artists) {
     const user = users.appendChild(document.createElement("div"));
     user.setAttribute("class", "user");
+    if (hidden.includes(i)) user.style.display = "none";
     const table = user
       .appendChild(document.createElement("table"))
       .appendChild(document.createElement("tr"));
@@ -67,40 +61,31 @@ renderArtists = artists => {
     remove.innerText = "Delete";
     remove.setAttribute("class", "delete");
     remove.setAttribute("onclick", "del(" + i++ + ")");
-    remove.addEventListener("click", rm, false);
   }
 };
 
-renderAllArtists = () => renderArtists(loadArtists());
 
 del = i => {
-  const artists = loadArtists();
-  artists.splice(i, 1);
-  localStorage.setItem("artists", JSON.stringify(artists));
+  fetch("/artists/delete?id=" + i).then(() => search());
 };
 
-rm = event => {
-  event.target.parentElement.parentElement.parentElement.parentElement.remove();
-};
-
-loadArtists = () => {
-  const artists = localStorage.getItem("artists");
-  if (!artists) return [];
-  return JSON.parse(artists);
-};
 
 search = () => {
   const search_key = document.querySelector("#search").value;
-  if (search_key) {
-    const results = loadArtists().filter(value => {
-      if (
-        value.name.search(new RegExp(search_key, "i")) >= 0 ||
-        value.about.search(new RegExp(search_key, "i")) >= 0
-      )
-        return value;
+  fetch("/artists/all").then(data => {
+    data.json().then(artists => {
+      if (search_key) {
+        const hidden = artists.map((value, index) => {
+          if (
+            value.name.search(new RegExp(search_key, "i")) < 0 &&
+            value.about.search(new RegExp(search_key, "i")) < 0
+          )
+            return index;
+        });
+        renderArtists(artists, hidden);
+      } else {
+        renderArtists(artists);
+      }
     });
-    renderArtists(results);
-  } else {
-    renderAllArtists();
-  }
+  });
 };

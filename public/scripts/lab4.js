@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  renderAllArtists();
+  search();
 });
 
-add_artist = () => {
+toggle_add_artist = () => {
   const form_display = document.querySelector(".form").style.display;
   if (!form_display || form_display == "none") {
     document.querySelector(".form").style.display = "block";
@@ -24,15 +24,16 @@ add = () => {
   const artists = loadArtists();
   artists.push(artist);
   localStorage.setItem("artists", JSON.stringify(artists));
-  renderAllArtists();
+  search();
 
   document.querySelector(".form #name").value = "";
   document.querySelector(".form #about").value = "";
   document.querySelector(".form #img").value = "";
-  add_artist();
+  document.querySelector("#search").value = "";
+  toggle_add_artist();
 };
 
-renderArtists = artists => {
+renderArtists = (artists, hidden = []) => {
   const users = document.querySelector(".users");
   while (users.firstChild) {
     users.removeChild(users.firstChild);
@@ -41,6 +42,7 @@ renderArtists = artists => {
   for (artist of artists) {
     const user = users.appendChild(document.createElement("div"));
     user.setAttribute("class", "user");
+    if (hidden.includes(i)) user.style.display = "none";
     const table = user
       .appendChild(document.createElement("table"))
       .appendChild(document.createElement("tr"));
@@ -67,7 +69,6 @@ renderArtists = artists => {
     remove.innerText = "Delete";
     remove.setAttribute("class", "delete");
     remove.setAttribute("onclick", "del(" + i++ + ")");
-    remove.addEventListener("click", rm, false);
   }
 };
 
@@ -77,10 +78,7 @@ del = i => {
   const artists = loadArtists();
   artists.splice(i, 1);
   localStorage.setItem("artists", JSON.stringify(artists));
-};
-
-rm = event => {
-  event.target.parentElement.parentElement.parentElement.parentElement.remove();
+  search();
 };
 
 loadArtists = () => {
@@ -91,16 +89,17 @@ loadArtists = () => {
 
 search = () => {
   const search_key = document.querySelector("#search").value;
+  const artists = loadArtists();
   if (search_key) {
-    const results = loadArtists().filter(value => {
+    const hidden = artists.map((value, index) => {
       if (
-        value.name.search(new RegExp(search_key, "i")) >= 0 ||
-        value.about.search(new RegExp(search_key, "i")) >= 0
+        value.name.search(new RegExp(search_key, "i")) < 0 &&
+        value.about.search(new RegExp(search_key, "i")) < 0
       )
-        return value;
+        return index;
     });
-    renderArtists(results);
+    renderArtists(artists, hidden);
   } else {
-    renderAllArtists();
+    renderArtists(artists);
   }
 };

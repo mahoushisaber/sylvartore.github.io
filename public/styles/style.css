@@ -39,7 +39,7 @@ input {
 
 .form {
   margin: auto;
-  max-width: 18%;
+  width: fit-content;
   padding: 10px;
   display: none;
 }
