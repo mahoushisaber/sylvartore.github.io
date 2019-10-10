@@ -72,8 +72,6 @@ renderArtists = (artists, hidden = []) => {
   }
 };
 
-renderAllArtists = () => renderArtists(loadArtists());
-
 del = i => {
   const artists = loadArtists();
   artists.splice(i, 1);

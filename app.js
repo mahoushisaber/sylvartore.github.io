@@ -54,7 +54,6 @@ app.get("/artists/add", (req, res) => {
 
 app.get("/artists/delete", (req, res) => {
     getAllArtists().then((artists) => {
-        console.log("delete id " + (req.query.id))
         artists.splice(req.query.id, 1);
         fs.writeFile("./public/artists.txt", JSON.stringify(artists), err => {
             if (err) res.status(500).send("error when writting file")
